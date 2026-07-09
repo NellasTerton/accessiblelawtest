@@ -2,30 +2,30 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Scale, Plus, Users, Clock, CheckCircle2, Search, Phone as PhoneIcon } from "lucide-react";
 
-type Status = "New" | "In Progress" | "Closed";
+type Status = "Новый" | "В работе" | "Закрыт";
 type Client = { id: string; name: string; phone: string; status: Status };
 
-const STORAGE_KEY = "lawyer-crm-clients";
+const STORAGE_KEY = "lawyer-crm-clients-ru";
 const WEBHOOK_URL = "https://hook.eu1.make.com/pb5livbdspqlhp66h1ggbdpwa8pugudh";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Lex — Lawyer CRM Dashboard" },
-      { name: "description", content: "Sleek LegalTech CRM to manage clients, statuses, and casework." },
-      { property: "og:title", content: "Lex — Lawyer CRM Dashboard" },
-      { property: "og:description", content: "Sleek LegalTech CRM to manage clients, statuses, and casework." },
+      { title: "Lex — CRM для юристов" },
+      { name: "description", content: "Современная LegalTech CRM для управления клиентами, статусами и делами." },
+      { property: "og:title", content: "Lex — CRM для юристов" },
+      { property: "og:description", content: "Современная LegalTech CRM для управления клиентами, статусами и делами." },
     ],
   }),
   component: Dashboard,
 });
 
-const STATUSES: Status[] = ["New", "In Progress", "Closed"];
+const STATUSES: Status[] = ["Новый", "В работе", "Закрыт"];
 
 const statusStyles: Record<Status, string> = {
-  New: "bg-amber-500/10 text-amber-300 ring-1 ring-amber-500/30",
-  "In Progress": "bg-sky-500/10 text-sky-300 ring-1 ring-sky-500/30",
-  Closed: "bg-emerald-500/10 text-emerald-300 ring-1 ring-emerald-500/30",
+  "Новый": "bg-amber-500/10 text-amber-300 ring-1 ring-amber-500/30",
+  "В работе": "bg-sky-500/10 text-sky-300 ring-1 ring-sky-500/30",
+  "Закрыт": "bg-emerald-500/10 text-emerald-300 ring-1 ring-emerald-500/30",
 };
 
 function Dashboard() {
@@ -36,13 +36,18 @@ function Dashboard() {
 
   useEffect(() => {
     try {
+      // Remove legacy storage from earlier English version
+      localStorage.removeItem("lawyer-crm-clients");
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) setClients(JSON.parse(raw));
       else {
         const seed: Client[] = [
-          { id: crypto.randomUUID(), name: "Marcus Whitfield", phone: "+1 (415) 555-0134", status: "New" },
-          { id: crypto.randomUUID(), name: "Elena Rossi", phone: "+1 (212) 555-0198", status: "In Progress" },
-          { id: crypto.randomUUID(), name: "Jonah Beckett", phone: "+1 (646) 555-0177", status: "Closed" },
+          { id: crypto.randomUUID(), name: "Сол Гудман", phone: "+1 (505) 503-4455", status: "Новый" },
+          { id: crypto.randomUUID(), name: "Харви Спектер", phone: "+1 (212) 555-0199", status: "В работе" },
+          { id: crypto.randomUUID(), name: "Ким Уэкслер", phone: "+1 (505) 555-0177", status: "Новый" },
+          { id: crypto.randomUUID(), name: "Мэтт Мёрдок", phone: "+1 (212) 555-0188", status: "Закрыт" },
+          { id: crypto.randomUUID(), name: "Перри Мейсон", phone: "+1 (310) 555-0166", status: "В работе" },
+          { id: crypto.randomUUID(), name: "Алан Шор", phone: "+1 (617) 555-0155", status: "Закрыт" },
         ];
         setClients(seed);
       }
@@ -55,9 +60,9 @@ function Dashboard() {
   }, [clients, loaded]);
 
   const counts = {
-    New: clients.filter((c) => c.status === "New").length,
-    "In Progress": clients.filter((c) => c.status === "In Progress").length,
-    Closed: clients.filter((c) => c.status === "Closed").length,
+    "Новый": clients.filter((c) => c.status === "Новый").length,
+    "В работе": clients.filter((c) => c.status === "В работе").length,
+    "Закрыт": clients.filter((c) => c.status === "Закрыт").length,
   };
 
   const filtered = clients.filter(
@@ -94,12 +99,12 @@ function Dashboard() {
             </div>
             <div>
               <h1 className="text-lg font-semibold tracking-tight">Lex CRM</h1>
-              <p className="text-xs text-slate-400">Client Case Management</p>
+              <p className="text-xs text-slate-400">Управление клиентами и делами</p>
             </div>
           </div>
           <div className="hidden items-center gap-2 text-xs text-slate-400 md:flex">
             <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-            All systems operational
+            Все системы работают
           </div>
         </div>
       </header>
@@ -107,22 +112,22 @@ function Dashboard() {
       <main className="relative mx-auto max-w-7xl px-6 py-10">
         <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h2 className="text-2xl font-semibold tracking-tight">Dashboard</h2>
-            <p className="mt-1 text-sm text-slate-400">Overview of all active client engagements.</p>
+            <h2 className="text-2xl font-semibold tracking-tight">Дашборд</h2>
+            <p className="mt-1 text-sm text-slate-400">Обзор всех активных клиентских дел.</p>
           </div>
         </div>
 
         <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <StatCard label="New Clients" value={counts.New} icon={<Users className="h-4 w-4" />} tint="amber" />
-          <StatCard label="In Progress" value={counts["In Progress"]} icon={<Clock className="h-4 w-4" />} tint="sky" />
-          <StatCard label="Closed Cases" value={counts.Closed} icon={<CheckCircle2 className="h-4 w-4" />} tint="emerald" />
+          <StatCard label="Новые клиенты" value={counts["Новый"]} icon={<Users className="h-4 w-4" />} tint="amber" />
+          <StatCard label="В работе" value={counts["В работе"]} icon={<Clock className="h-4 w-4" />} tint="sky" />
+          <StatCard label="Закрытые дела" value={counts["Закрыт"]} icon={<CheckCircle2 className="h-4 w-4" />} tint="emerald" />
         </section>
 
         <section className="mt-10 rounded-2xl border border-white/5 bg-white/[0.02] backdrop-blur">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/5 px-6 py-4">
             <div>
-              <h3 className="text-sm font-semibold">Clients</h3>
-              <p className="text-xs text-slate-400">{clients.length} total records</p>
+              <h3 className="text-sm font-semibold">Клиенты</h3>
+              <p className="text-xs text-slate-400">{clients.length} записей всего</p>
             </div>
             <div className="flex items-center gap-2">
               <div className="relative">
@@ -130,7 +135,7 @@ function Dashboard() {
                 <input
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search clients..."
+                  placeholder="Поиск клиентов..."
                   className="w-64 rounded-lg border border-white/10 bg-white/[0.03] py-2 pl-9 pr-3 text-sm text-slate-100 placeholder:text-slate-500 focus:border-sky-500/50 focus:outline-none focus:ring-2 focus:ring-sky-500/20"
                 />
               </div>
@@ -138,7 +143,7 @@ function Dashboard() {
                 onClick={() => setOpen(true)}
                 className="inline-flex items-center gap-2 rounded-lg bg-sky-500 px-3.5 py-2 text-sm font-medium text-white shadow-[0_0_20px_rgba(14,165,233,0.35)] transition hover:bg-sky-400"
               >
-                <Plus className="h-4 w-4" /> Add Client
+                <Plus className="h-4 w-4" /> Добавить клиента
               </button>
             </div>
           </div>
@@ -147,16 +152,16 @@ function Dashboard() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-white/5 text-left text-xs uppercase tracking-wider text-slate-500">
-                  <th className="px-6 py-3 font-medium">Name</th>
-                  <th className="px-6 py-3 font-medium">Phone</th>
-                  <th className="px-6 py-3 font-medium">Status</th>
+                  <th className="px-6 py-3 font-medium">Имя</th>
+                  <th className="px-6 py-3 font-medium">Телефон</th>
+                  <th className="px-6 py-3 font-medium">Статус</th>
                 </tr>
               </thead>
               <tbody>
                 {filtered.length === 0 ? (
                   <tr>
                     <td colSpan={3} className="px-6 py-16 text-center text-sm text-slate-500">
-                      No clients found. Add your first client to get started.
+                      Клиенты не найдены. Добавьте первого клиента, чтобы начать.
                     </td>
                   </tr>
                 ) : (
@@ -244,7 +249,7 @@ function AddClientModal({
 }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [status, setStatus] = useState<Status>("New");
+  const [status, setStatus] = useState<Status>("Новый");
   const [submitting, setSubmitting] = useState(false);
 
   const submit = async (e: React.FormEvent) => {
@@ -265,30 +270,30 @@ function AddClientModal({
         onClick={(e) => e.stopPropagation()}
         className="w-full max-w-md rounded-2xl border border-white/10 bg-[#0d1119] p-6 shadow-2xl"
       >
-        <h3 className="text-lg font-semibold text-white">New Client</h3>
-        <p className="mt-1 text-sm text-slate-400">Add a client record to the CRM.</p>
+        <h3 className="text-lg font-semibold text-white">Новый клиент</h3>
+        <p className="mt-1 text-sm text-slate-400">Добавьте запись о клиенте в CRM.</p>
 
         <div className="mt-6 space-y-4">
-          <Field label="Full name">
+          <Field label="Полное имя">
             <input
               autoFocus
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Jane Doe"
+              placeholder="Иван Иванов"
               className="w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-sky-500/50 focus:outline-none focus:ring-2 focus:ring-sky-500/20"
               required
             />
           </Field>
-          <Field label="Phone">
+          <Field label="Телефон">
             <input
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              placeholder="+1 (555) 123-4567"
+              placeholder="+7 (999) 123-45-67"
               className="w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-sky-500/50 focus:outline-none focus:ring-2 focus:ring-sky-500/20"
               required
             />
           </Field>
-          <Field label="Initial status">
+          <Field label="Начальный статус">
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value as Status)}
@@ -309,14 +314,14 @@ function AddClientModal({
             onClick={onClose}
             className="rounded-lg border border-white/10 bg-transparent px-4 py-2 text-sm font-medium text-slate-300 transition hover:bg-white/5"
           >
-            Cancel
+            Отмена
           </button>
           <button
             type="submit"
             disabled={submitting}
             className="rounded-lg bg-sky-500 px-4 py-2 text-sm font-medium text-white shadow-[0_0_20px_rgba(14,165,233,0.35)] transition hover:bg-sky-400 disabled:opacity-60"
           >
-            {submitting ? "Adding..." : "Add Client"}
+            {submitting ? "Добавление..." : "Добавить клиента"}
           </button>
         </div>
       </form>
