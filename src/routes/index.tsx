@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Scale, Plus, Users, Clock, CheckCircle2, Search, Phone as PhoneIcon, Bell } from "lucide-react";
+import { Scale, Plus, Users, Clock, CheckCircle2, Search, Phone as PhoneIcon, Bell, Trash2, AlertTriangle } from "lucide-react";
 
 type Status = "Новый" | "В работе" | "Закрыт";
 type Client = { id: string; name: string; phone: string; status: Status };
@@ -32,6 +32,7 @@ function Dashboard() {
   const [clients, setClients] = useState<Client[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [open, setOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<Client | null>(null);
   const [query, setQuery] = useState("");
 
   useEffect(() => {
@@ -85,6 +86,11 @@ function Dashboard() {
         body: JSON.stringify({ name, phone }),
       });
     } catch {}
+  };
+
+  const deleteClient = (id: string) => {
+    setClients((prev) => prev.filter((c) => c.id !== id));
+    setDeleteTarget(null);
   };
 
   return (
@@ -180,14 +186,15 @@ function Dashboard() {
                   <th className="px-6 py-3 font-medium">Имя</th>
                   <th className="px-6 py-3 font-medium">Телефон</th>
                   <th className="px-6 py-3 font-medium">Статус</th>
+                  <th className="px-6 py-3 font-medium text-right">Действия</th>
                 </tr>
               </thead>
               <tbody>
                 {filtered.length === 0 ? (
                   <tr>
-                    <td colSpan={3} className="px-6 py-16 text-center text-sm text-slate-500">
-                      Клиенты не найдены. Добавьте первого клиента, чтобы начать.
-                    </td>
+                  <td colSpan={4} className="px-6 py-16 text-center text-sm text-slate-500">
+                    Клиенты не найдены. Добавьте первого клиента, чтобы начать.
+                  </td>
                   </tr>
                 ) : (
                   filtered.map((c) => (
@@ -222,6 +229,15 @@ function Dashboard() {
                           <svg className="pointer-events-none absolute right-2 top-1/2 h-3 w-3 -translate-y-1/2 opacity-60" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" /></svg>
                         </div>
                       </td>
+                      <td className="px-6 py-4 text-right">
+                        <button
+                          onClick={() => setDeleteTarget(c)}
+                          className="inline-flex items-center justify-center rounded-lg border border-white/10 bg-white/[0.03] p-2 text-slate-400 transition hover:border-rose-500/30 hover:bg-rose-500/10 hover:text-rose-400"
+                          aria-label="Удалить клиента"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </td>
                     </tr>
                   ))
                 )}
@@ -232,6 +248,13 @@ function Dashboard() {
       </main>
 
       {open && <AddClientModal onClose={() => setOpen(false)} onAdd={addClient} />}
+      {deleteTarget && (
+        <DeleteConfirmModal
+          client={deleteTarget}
+          onClose={() => setDeleteTarget(null)}
+          onConfirm={() => deleteClient(deleteTarget.id)}
+        />
+      )}
     </div>
   );
 }
@@ -350,6 +373,57 @@ function AddClientModal({
           </button>
         </div>
       </form>
+    </div>
+  );
+}
+
+function DeleteConfirmModal({
+  client,
+  onClose,
+  onConfirm,
+}: {
+  client: Client;
+  onClose: () => void;
+  onConfirm: () => void;
+}) {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-sm rounded-2xl border border-white/10 bg-[#0d1119] p-6 shadow-2xl"
+      >
+        <div className="flex items-start gap-4">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-rose-500/20 text-rose-300 ring-1 ring-rose-500/30">
+            <AlertTriangle className="h-5 w-5" />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-white">Удалить клиента?</h3>
+            <p className="mt-1 text-sm text-slate-400">
+              Вы уверены, что хотите удалить запись <span className="font-medium text-slate-200">{client.name}</span>? Это действие нельзя отменить.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-6 flex justify-end gap-2">
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-lg border border-white/10 bg-transparent px-4 py-2 text-sm font-medium text-slate-300 transition hover:bg-white/5"
+          >
+            Отмена
+          </button>
+          <button
+            type="button"
+            onClick={onConfirm}
+            className="rounded-lg bg-rose-500 px-4 py-2 text-sm font-medium text-white shadow-[0_0_20px_rgba(244,63,94,0.35)] transition hover:bg-rose-400"
+          >
+            Удалить
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
