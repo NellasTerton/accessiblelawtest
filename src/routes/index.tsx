@@ -88,6 +88,11 @@ function Dashboard() {
     } catch {}
   };
 
+  const deleteClient = (id: string) => {
+    setClients((prev) => prev.filter((c) => c.id !== id));
+    setDeleteTarget(null);
+  };
+
   return (
     <div className="min-h-screen bg-[#0a0d14] text-slate-100">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(ellipse_at_top,rgba(56,189,248,0.08),transparent_60%)]" />
