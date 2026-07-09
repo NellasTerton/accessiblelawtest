@@ -192,9 +192,9 @@ function Dashboard() {
               <tbody>
                 {filtered.length === 0 ? (
                   <tr>
-                    <td colSpan={3} className="px-6 py-16 text-center text-sm text-slate-500">
-                      Клиенты не найдены. Добавьте первого клиента, чтобы начать.
-                    </td>
+                  <td colSpan={4} className="px-6 py-16 text-center text-sm text-slate-500">
+                    Клиенты не найдены. Добавьте первого клиента, чтобы начать.
+                  </td>
                   </tr>
                 ) : (
                   filtered.map((c) => (
