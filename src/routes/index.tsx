@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Scale, Plus, Users, Clock, CheckCircle2, Search, Phone as PhoneIcon } from "lucide-react";
+import { Scale, Plus, Users, Clock, CheckCircle2, Search, Phone as PhoneIcon, Bell } from "lucide-react";
 
 type Status = "Новый" | "В работе" | "Закрыт";
 type Client = { id: string; name: string; phone: string; status: Status };
@@ -110,6 +110,31 @@ function Dashboard() {
       </header>
 
       <main className="relative mx-auto max-w-7xl px-6 py-10">
+        <section className="mb-8 overflow-hidden rounded-2xl border border-sky-500/20 bg-gradient-to-r from-sky-500/10 via-indigo-500/10 to-sky-500/10 p-5 shadow-[0_0_40px_rgba(14,165,233,0.12)]">
+          <div className="flex items-start gap-4">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sky-500/20 text-sky-300 ring-1 ring-sky-500/30">
+              <Bell className="h-5 w-5" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm leading-relaxed text-slate-200">
+                <span className="font-semibold text-sky-300">Тестовая автоматизация:</span>{" "}
+                <a
+                  href="https://t.me/lexcrmtest"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 font-medium text-sky-300 underline underline-offset-4 transition hover:text-sky-200"
+                >
+                  Открыть Telegram-канал
+                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                  </svg>
+                </a>
+                . Добавьте нового клиента и уведомление моментально придет в этот канал через вебхук.
+              </p>
+            </div>
+          </div>
+        </section>
+
         <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
           <div>
             <h2 className="text-2xl font-semibold tracking-tight">Дашборд</h2>
