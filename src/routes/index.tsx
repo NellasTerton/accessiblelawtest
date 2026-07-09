@@ -186,6 +186,7 @@ function Dashboard() {
                   <th className="px-6 py-3 font-medium">Имя</th>
                   <th className="px-6 py-3 font-medium">Телефон</th>
                   <th className="px-6 py-3 font-medium">Статус</th>
+                  <th className="px-6 py-3 font-medium text-right">Действия</th>
                 </tr>
               </thead>
               <tbody>
