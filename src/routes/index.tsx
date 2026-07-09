@@ -377,6 +377,57 @@ function AddClientModal({
   );
 }
 
+function DeleteConfirmModal({
+  client,
+  onClose,
+  onConfirm,
+}: {
+  client: Client;
+  onClose: () => void;
+  onConfirm: () => void;
+}) {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-sm rounded-2xl border border-white/10 bg-[#0d1119] p-6 shadow-2xl"
+      >
+        <div className="flex items-start gap-4">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-rose-500/20 text-rose-300 ring-1 ring-rose-500/30">
+            <AlertTriangle className="h-5 w-5" />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-white">Удалить клиента?</h3>
+            <p className="mt-1 text-sm text-slate-400">
+              Вы уверены, что хотите удалить запись <span className="font-medium text-slate-200">{client.name}</span>? Это действие нельзя отменить.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-6 flex justify-end gap-2">
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-lg border border-white/10 bg-transparent px-4 py-2 text-sm font-medium text-slate-300 transition hover:bg-white/5"
+          >
+            Отмена
+          </button>
+          <button
+            type="button"
+            onClick={onConfirm}
+            className="rounded-lg bg-rose-500 px-4 py-2 text-sm font-medium text-white shadow-[0_0_20px_rgba(244,63,94,0.35)] transition hover:bg-rose-400"
+          >
+            Удалить
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
