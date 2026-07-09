@@ -248,6 +248,13 @@ function Dashboard() {
       </main>
 
       {open && <AddClientModal onClose={() => setOpen(false)} onAdd={addClient} />}
+      {deleteTarget && (
+        <DeleteConfirmModal
+          client={deleteTarget}
+          onClose={() => setDeleteTarget(null)}
+          onConfirm={() => deleteClient(deleteTarget.id)}
+        />
+      )}
     </div>
   );
 }
