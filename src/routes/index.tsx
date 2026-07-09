@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Scale, Plus, Users, Clock, CheckCircle2, Search, Phone as PhoneIcon, Bell } from "lucide-react";
+import { Scale, Plus, Users, Clock, CheckCircle2, Search, Phone as PhoneIcon, Bell, Trash2, AlertTriangle } from "lucide-react";
 
 type Status = "Новый" | "В работе" | "Закрыт";
 type Client = { id: string; name: string; phone: string; status: Status };
