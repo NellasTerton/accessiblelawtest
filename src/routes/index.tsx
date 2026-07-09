@@ -32,6 +32,7 @@ function Dashboard() {
   const [clients, setClients] = useState<Client[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [open, setOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<Client | null>(null);
   const [query, setQuery] = useState("");
 
   useEffect(() => {
