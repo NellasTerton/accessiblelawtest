@@ -9,7 +9,7 @@ A prototype CRM for lawyers, built to validate a product hypothesis quickly.
 ## 📸 Interface
 
 <!-- Drop the dashboard screenshot at docs/screenshot.png -->
-<img src="docs/screenshot.png" alt="Lex CRM dashboard: client table and per-status counters" width="100%">
+<img src="https://github.com/user-attachments/assets/d3d14a88-024f-4567-ab73-9b6dd0da14d6" alt="Lex CRM dashboard: client table and per-status counters" width="50%">
 
 ## ⚡ Core features
 *   **Lead management:** Add clients (name, phone, status) through a modal dialog.
