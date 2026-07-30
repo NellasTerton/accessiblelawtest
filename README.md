@@ -1,6 +1,6 @@
 # Lex CRM — LegalTech Dashboard (Test Task)
 
-**🇷🇺 Русский** · [🇬🇧 English](./README.en.md)
+**Русский** · [English](./README.en.md)
 
 🟢 **[Live Demo](https://accessiblelawtest.lovable.app)**
 
